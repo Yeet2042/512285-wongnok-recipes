@@ -181,7 +181,7 @@ export default function page({}: Props) {
                   </Card>
                 </div>
               </div>
-            ))}HIS IS BANNER
+            ))}
           </div>
         </div>
       </div>

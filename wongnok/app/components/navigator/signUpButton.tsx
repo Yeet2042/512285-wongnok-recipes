@@ -44,7 +44,7 @@ export default function SignUpButton({}: Props) {
                 return
             } if (res.ok) {
                 alert('Sign up successful')
-                router.push("/profile")
+                router.push("/")
             }
         } catch (error) {
             console.error(error)
@@ -136,7 +136,7 @@ export default function SignUpButton({}: Props) {
                                     className="w-full text-lg font-bold"
                                     onPress={handleSubmit}
                                 >
-                                    เข้าสู่ระบบ
+                                    สมัครสมาชิก
                                 </Button>
                                 <div className="flex space-x-2 pt-3">
                                     <p>มีบัญชีผู้ใช้แล้ว?</p>

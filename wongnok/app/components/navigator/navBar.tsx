@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react';
 import SignInButton from './signInButton';
 import SignUpButton from './signUpButton';
 import ProfileNav from './profileNav';
+import CreateRecipeButton from './createRecipeButton';
 
 type Props = {}
 
@@ -57,9 +58,10 @@ export default function NavBar({}: Props) {
                 </>
             )}
             {status === "authenticated" && (
-                <>
+                <div className="flex space-x-6">
+                    <CreateRecipeButton />
                     <ProfileNav />
-                </>
+                </div>
             )}
             
         </NavbarItem>

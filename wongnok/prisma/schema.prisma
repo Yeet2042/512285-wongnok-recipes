@@ -15,11 +15,14 @@ datasource db {
 
 model Recipe {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  titleImage  String
+  stepImages  String[]
   name        String
   diffculty   String
-  time        Int
+  time        String
   ingredients Json
   steps       String[]
+  tags        String[]
   viewers     Int
   ratings     Rating[]
   comments    Comment[]
@@ -35,6 +38,7 @@ model User {
   password    String
   role        String    @default("member")
   createdAt   DateTime  @default(now())
+  image       String    @default("")
   recipes     Recipe[]
   ratings     Rating[]
 }

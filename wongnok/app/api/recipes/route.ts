@@ -1,3 +1,5 @@
+import { promises as fsPromises } from 'fs'
+import path from 'path'
 import { getPrismaClient } from "@/app/components/prismaClient"
 
 const prisma = getPrismaClient()
@@ -20,7 +22,33 @@ export async function GET() {
 
 //create recipe
 export async function POST(req: Request) {
-    try {
+    const formData = await req.formData()
+    const name: any = formData.get('name')
+    const formattedName: string = name.replace(/\s+/g, '-')
+    const titleImage = formData.get('titleImage')
+    
+    if (titleImage instanceof File) {
+        try {
+            const date = Date.now()
+            const newFileName = `${date}-${formattedName}-${titleImage.name}`
+            const imagePath = './app/uploads/images/recipes/title/' + newFileName
+    
+            const fileData = await titleImage.arrayBuffer();
+
+            await fsPromises.writeFile(imagePath, Buffer.from(fileData));
+    
+        } catch (error) {
+            console.error(error)
+        }
+    } else {
+        console.error('No image')
+    }
+
+    
+    return Response.json({
+        message: "ok"
+    })
+    /*try {
         const {
             name,
             diffculty,
@@ -62,7 +90,7 @@ export async function POST(req: Request) {
         return Response.json({
             message: "Internal server error"
         }, { status: 500 })
-    }
+    }*/
 }
 
 //delete recipe
