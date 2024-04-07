@@ -10,13 +10,9 @@ type Props = {
 
 export default function AddSteps({ step }: Props) {
     const [steps, setSteps] = useState<{ image?: File | null; title: string }[]>([])
+    const [selectedIndex, setSelectedIndex] = useState<number | null>(null)
 
     const fileInputRef = useRef<HTMLInputElement>(null)
-
-    useEffect(() => {
-        step(steps)
-    }, [steps, step])
-    
 
     const handleAddStep = () => {
         setSteps([...steps, { image: null, title: '' }])
@@ -26,26 +22,29 @@ export default function AddSteps({ step }: Props) {
         const newSteps = [...steps]
         newSteps.splice(index, 1)
         setSteps(newSteps)
+        step(newSteps)
     }
 
     const handleRemoveFile = (index: number) => {
         const newSteps = [...steps]
         newSteps[index].image = null
         setSteps(newSteps)
+        step(newSteps)
     }
 
-    const handleButton = () => {
+    const handleButton = (index: number) => {
         fileInputRef.current?.click()
+        setSelectedIndex(index)
     }
 
-    const handleFileChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files
-        if (files && files.length > 0) {
+        if (files && files.length > 0 && selectedIndex !== null) {
             const selectedFile = files[0]
             const newSteps = [...steps]
-            newSteps[index].image  = selectedFile
+            newSteps[selectedIndex].image = selectedFile
             setSteps(newSteps)
-            step(steps)
+            step(newSteps)
         }
     }
 
@@ -53,8 +52,12 @@ export default function AddSteps({ step }: Props) {
         const newSteps = [...steps]
         newSteps[index].title = e.target.value
         setSteps(newSteps)
-        step(steps)
+        step(newSteps)
     }
+
+    useEffect(() => {
+        step(steps)
+    }, [steps, step])
 
     return (
         <>
@@ -62,6 +65,14 @@ export default function AddSteps({ step }: Props) {
             {steps.map((input, index) => (
                 <div key={index} className="flex flex-col gap-4">
                     <h3 className="font-bold">ขั้นตอนที่ {index + 1}</h3>
+                    <input
+                        key={index}
+                        type="file"
+                        accept="image/*"
+                        ref={fileInputRef}
+                        style={{ display: 'none' }}
+                        onChange={handleFileChange}
+                    />
                     {steps[index].image &&
                         <div className="flex flex-col items-center">
                             <div className="w-4/5 flex flex-col gap-4">
@@ -85,7 +96,7 @@ export default function AddSteps({ step }: Props) {
                                             <DropdownItem
                                                 key="เปลี่ยนรูปภาพ"
                                                 startContent={ <PhotoIcon className="h-5 w-5" /> }
-                                                onPress={handleButton}
+                                                onPress={() => handleButton(index)}
                                             >
                                                 เปลี่ยนรูปภาพ
                                             </DropdownItem>
@@ -105,20 +116,13 @@ export default function AddSteps({ step }: Props) {
                             </div>
                         </div>
                     }
-                    <input
-                        type="file"
-                        accept="image/*"
-                        ref={fileInputRef}
-                        style={{ display: 'none' }}
-                        onChange={(e) => handleFileChange(index, e)}
-                    />
                     { !steps[index].image && (
                         <Button
                             variant="flat"
                             color="success"
                             startContent={ <PhotoIcon className="h-5 w-5" /> }
                             className="w-fit"
-                            onPress={handleButton}
+                            onPress={() => handleButton(index)}
                         >
                             เพิ่มรูปภาพ
                         </Button>
