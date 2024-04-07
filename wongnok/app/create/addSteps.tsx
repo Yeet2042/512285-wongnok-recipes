@@ -24,14 +24,7 @@ export default function AddSteps({ step }: Props) {
         setSteps(newSteps)
         step(newSteps)
     }
-
-    const handleRemoveFile = (index: number) => {
-        const newSteps = [...steps]
-        newSteps[index].image = null
-        setSteps(newSteps)
-        step(newSteps)
-    }
-
+    
     const handleButton = (index: number) => {
         fileInputRef.current?.click()
         setSelectedIndex(index)
@@ -99,15 +92,6 @@ export default function AddSteps({ step }: Props) {
                                                 onPress={() => handleButton(index)}
                                             >
                                                 เปลี่ยนรูปภาพ
-                                            </DropdownItem>
-                                            <DropdownItem 
-                                                key="ลบรูป" 
-                                                className="text-danger" 
-                                                color="danger"
-                                                startContent={ <TrashIcon className="h-5 w-5" /> }
-                                                onPress={() => handleRemoveFile(index)}
-                                            >
-                                                ลบรูป
                                             </DropdownItem>
                                         </DropdownMenu>
                                     </Dropdown>

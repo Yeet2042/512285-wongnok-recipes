@@ -16,19 +16,24 @@ datasource db {
 model Recipe {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   titleImage  String
-  stepImages  String[]
+  stepImages  Json
   name        String
   diffculty   String
   time        String
-  ingredients Json
+  ingredients ingredients[]
   steps       String[]
-  tags        String[]
-  viewers     Int
+  tags        String[]  @default([])
+  viewers     Int       @default(0)
   ratings     Rating[]
   comments    Comment[]
   author      User      @relation(fields: [authorId], references: [id])
   authorId    String    @db.ObjectId
   createdAt   DateTime  @default(now())
+}
+
+type ingredients {
+  name        String
+  quantity    String
 }
 
 model User {
@@ -40,6 +45,7 @@ model User {
   createdAt   DateTime  @default(now())
   image       String    @default("")
   recipes     Recipe[]
+  comments    Comment[]
   ratings     Rating[]
 }
 
@@ -48,6 +54,8 @@ model Comment {
   comment     String
   recipe      Recipe    @relation(fields: [recipeId], references: [id])
   recipeId    String    @db.ObjectId
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @db.ObjectId
   createdAt   DateTime  @default(now())
 }
 
@@ -59,4 +67,11 @@ model Rating {
   user       User     @relation(fields: [userId], references: [id])
   userId     String   @db.ObjectId
   createdAt  DateTime @default(now())
+}
+
+model Category {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  image      String
+  href       String
 }

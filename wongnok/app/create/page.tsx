@@ -63,7 +63,6 @@ export default function Create({}: Props) {
   }
 
   const handleSubmit = async () => {
-    console.log(titleImage, recipeName, difficulty, time, ingredients, steps)
     if (!titleImage) {
       alert("กรุณาใส่รูปภาพหน้าปก!")
       return
@@ -96,6 +95,10 @@ export default function Create({}: Props) {
       alert("กรุณากรอกข้อมูลขั้นตอนการทำให้ครบถ้วน!")
       return
     }
+    if (steps.some(step => !step.image)) {
+      alert("กรุณาใส่รูปภาพขั้นตอนการทำให้ครบถ้วน!")
+      return
+    }
 
     const formData = new FormData();
     formData.append('titleImage', titleImage);
@@ -103,9 +106,12 @@ export default function Create({}: Props) {
     formData.append('difficulty', difficulty);
     formData.append('time', time);
     formData.append('ingredients', JSON.stringify(ingredients));
+    if (session?.user.id !== undefined) {
+      formData.append('userId', session.user.id);
+    }
 
-    const titleSteps = steps.map(step => ({ title: step.title }))
-    formData.append('titleSteps', JSON.stringify(titleSteps))
+    const titleSteps = steps.map(step => step.title)
+    formData.append('titleSteps', JSON.stringify(titleSteps))    
 
     steps.forEach((step, index) => {
       if (step.image) {
@@ -186,7 +192,6 @@ export default function Create({}: Props) {
                   ยืนยันข้อมูล
                 </Button> 
               </div>
-              
             </div>
         </div>
       </>

@@ -11,11 +11,28 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
               },
         })
 
+        if (recipe) {
+            const addView = await prisma.recipe.update({
+                where: {
+                    id: params.id,
+                },
+                data: {
+                    viewers: { increment: 1 }
+                }
+            })
+
+            return Response.json({
+                recipe
+            }, { status: 200 })
+        }
+
         return Response.json({
-            recipe
-        }, { status: 200 })
+            message: "Not found"
+        }, { status: 404 })
         
     } catch (error) {
+        console.log(error)
+        
         return Response.json({
             message: "Internal server error"
         }, { status: 500 })
