@@ -21,7 +21,7 @@ export default function ProfileNav({}: Props) {
                                 avatarProps={{
                                     isBordered: true,
                                     radius: "md",
-                                    src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
+                                    src: `${session.user.image}`,
                                 }}
                                 className="transition-transform"
                                 description={session.user.role}

@@ -1,18 +1,29 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { use, useCallback, useEffect, useState } from 'react'
 import { useParams } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import Image from 'next/image'
-import { Avatar, Button, User } from '@nextui-org/react'
-import { EyeIcon } from '@heroicons/react/24/solid'
+import { Avatar, Button, Textarea, User } from '@nextui-org/react'
+import { EyeIcon, PaperAirplaneIcon, TrashIcon } from '@heroicons/react/24/solid'
+
+import TitleSection from '@/app/components/recipes/titleSection'
+import CommentSection from '@/app/components/recipes/commentSection'
+
+import RatingStars from '@/app/components/ratingStars'
+
+
 
 interface Ingredient {
   name: string;
   quantity: string;
 }
 
-interface Commend {
-
+interface Comment {
+  id: string;
+  comment: string;
+  rating: number;
+  createdAt: string;
+  userId: string;
 }
 
 interface Recipe {
@@ -26,12 +37,10 @@ interface Recipe {
   steps: string[];
   tags: string[];
   viewers: number;
-  commends: Commend[];
+  comments: Comment[];
   authorId: string;
   createdAt: Date;
 }
-
-
 
 type Props = {}
 
@@ -40,126 +49,111 @@ export default function Page({}: Props) {
   const params = useParams()
 
   const [recipe, setRecipe] = useState<Recipe | null>(null)
+  const [comments, setComments] = useState<Comment[]>([])
+  const [showSendComment, setShowSendComment] = useState(true)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [ recipe ] = await Promise.all([
-          fetch(`/api/recipes/${params.id}`),
-        ])
-        const recipeData = await recipe.json()
+  const [comment, setComment] = useState("")
+  const [rating, setRating] = useState<number | null>(null)
 
-        setRecipe(recipeData.recipe)
-
-      } catch (error) {
-        console.error(error)
-      }
+  const fetchData = useCallback(async () => {
+    try {
+      const [recipeRes, commentRes] = await Promise.all([
+        fetch(`/api/recipes/${params.id}`),
+        fetch(`/api/comments/${params.id}`),
+      ]);
+  
+      const recipeData = await recipeRes.json();
+      const commentData = await commentRes.json();
+  
+      setRecipe(recipeData.recipe);
+      setComments(commentData.comments);
+    } catch (error) {
+      console.error(error);
     }
-    fetchData()
   }, [params.id])
 
+  useEffect(() => {
+    fetchData()
+  }, [fetchData])
+
+  useEffect(() => {
+    if (comments.some(comment => comment.userId === session?.user.id)) {
+      setShowSendComment(false);
+    } else {
+      setShowSendComment(true);
+    }
+  }, [comments, session?.user.id])
+
+  const handleRatingChange = (newRating: number) => {
+    setRating(newRating)
+  }
+
+  const handleSendCommend = async () => {
+    if (comment !== "" && rating !== null) {
+      const res = await fetch(`/api/comments/${recipe?.id}`, {
+        method: "POST",
+        body: JSON.stringify({
+          comment,
+          rating,
+          userId: session?.user.id
+        })
+      })
+      if (res.ok) {
+        fetchData()
+      }
+    }
+  }
+  
+  const handleDeleteComment =async (commentId: string) => {
+    const res = await fetch(`/api/comments/${commentId}`, {
+      method: "DELETE",
+      body: JSON.stringify({
+        userId: session?.user.id
+      })
+    });
+    if (res.ok) {
+      fetchData()
+    }
+  }  
+
   return (
-    status === 'authenticated' &&
-    session.user && (
-      <div className="w-full mx-auto flex flex-col max-w-5xl">
-        {recipe && (
-          <>
-            <div className="w-4/5 flex flex-col gap-5 self-center my-10">
-              <div className="bg-neutral-500 bg-opacity-50 rounded-2xl flex justify-center">
-                <Image
-                  height={400}
-                  width={400}
-                  alt={recipe.name}
-                  className=""
-                  src={recipe.titleImage}
-                />
-              </div>
-              <div className="flex gap-4 justify-between">
-                <Button
-                  variant="flat"
-                  startContent={ <EyeIcon className="h-4 w-4" /> }
-                  className=""
-                >
-                  {recipe.viewers}
-                </Button>
-                <User
-                  as="button"
-                  avatarProps={{
-                      isBordered: true,
-                      radius: "md",
-                      src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-                  }}
-                  className="transition-transform"
-                  description={session.user.role}
-                  name={session.user.username}
-                />
-              </div>
-              <h1 className="text-3xl font-bold pt-8">{recipe.name}</h1>
-              <div>
-                
-              </div>
-              <div>
-                <h2 className="text-xl font-bold">วัตถุดิบ</h2>
-                { recipe.ingredients.map((ingredient, index) => (
-                  <div key={index} className="m-5 w-1/2">
-                    <div className="flex justify-between">
-                      <div>
-                        {ingredient.name}
-                      </div>
-                      <div>
-                        {ingredient.quantity}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div>
-                <h2 className="text-xl font-bold">ขั้นตอนในการทำ</h2>
-                <div className="flex flex-col gap-10">
-                  { recipe.steps.map((steps, index) => (
-                    <div key={index} className="m-5">
-                      <div className="flex flex-col gap-4">
-                        <div className="bg-neutral-500 bg-opacity-50 rounded-2xl flex justify-center mx-10">
-                          <Image
-                            height={300}
-                            width={300}
-                            alt={recipe.name}
-                            className=""
-                            src={recipe.stepImages[index]}
-                          />
-                        </div>
-                        <p>{steps}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div className="flex flex-col gap-4">
-                <h1 className="text-2xl font-bold">{recipe.commends?.length ? recipe.commends.length : "0"} ความคิดเห็น</h1>
-                <div className="bg-neutral-500 rounded-2xl bg-opacity-50">
-                  <div className="m-4">
-                    <div className="flex justify-between">
-                      <User
-                        avatarProps={{
-                            isBordered: true,
-                            radius: "md",
-                            src: "https://i.pravatar.cc/150?u=a042581f4e29026024d",
-                        }}
-                        className="transition-transform"
-                        description={session.user.role}
-                        name={session.user.username}
+    <div className="w-full mx-auto flex flex-col max-w-5xl">
+      {recipe && (
+        <>
+          <TitleSection recipeData={recipe} />
+          <div className="w-4/5 flex flex-col gap-5 self-center my-10">
+            <h1 className="text-2xl font-bold">{comments.length} ความคิดเห็น</h1>
+            <div className="flex flex-col gap-4">
+              {showSendComment && (
+                <div className="bg-default rounded-2xl bg-opacity-50">
+                  <div className="m-4 flex flex-col gap-4">
+                    <h2 className="text-xl font-bold">แสดงความคิดเห็น</h2>
+                    <div className="flex gap-4 items-center">
+                      <Textarea 
+                        placeholder="ความคิดเห็นของคุณ"
+                        value={comment}
+                        onValueChange={setComment}
                       />
-                      <div>
-                        THIS IS RATING
-                      </div>
                     </div>
+                    <h2 className="text-xl font-bold">ให้คะแนน</h2>
+                    <RatingStars rating={rating} onRatingChange={handleRatingChange} editable={true}/>
+                    {comment !== "" && rating !== null && (
+                      <Button 
+                        className="w-fit self-end"
+                        startContent={ <PaperAirplaneIcon className="h-4 w-4" /> }
+                        variant="flat"
+                        color="success"
+                        onPress={handleSendCommend}
+                      >ส่งความคิดเห็น</Button>
+                    )}
                   </div>
                 </div>
-              </div>
+              )}
+              <CommentSection commentList={comments} />
             </div>
-          </>
-        )}
-      </div>
-    )
+          </div>
+        </>
+      )}
+    </div>
   )
 }

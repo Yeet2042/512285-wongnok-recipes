@@ -25,7 +25,7 @@ export default function SignInButton({}: Props) {
             if (result?.error) {
                 alert("Invalid email or password")
             } else {
-                router.push('/profile')
+                router.push('/')
             }
         } catch (error) {
             console.log("error", error);

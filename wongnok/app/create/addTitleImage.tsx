@@ -32,7 +32,7 @@ export default function AddTitleImage({ titleImage }: Props) {
             {file && 
                 <div className="flex flex-col items-center">
                     <div className="w-4/5 flex flex-col gap-4">
-                        <div className="bg-neutral-800 rounded-2xl flex justify-center">
+                        <div className="bg-default rounded-2xl flex justify-center">
                             <Image height={300} width={300} src={file} alt="รูปภาพหน้าปก" />
                         </div>
                         <div className="w-full flex justify-end">

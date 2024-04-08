@@ -8,8 +8,23 @@ const prisma = getPrismaClient()
 //get all recipes
 export async function GET() {
     try {
-        const recipes = await prisma.recipe.findMany()
-
+        const recipes = await prisma.recipe.findMany({
+            include: {
+                author: {
+                    select: {
+                        username: true,
+                        role: true,
+                        image: true
+                    }
+                },
+                comments:{
+                    select: {
+                        rating: true
+                    }
+                }
+            }
+        })
+        
         return Response.json({
             recipes
         }, { status: 200 })

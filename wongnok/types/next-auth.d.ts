@@ -5,12 +5,14 @@ declare module "next-auth" {
     id: string
     username: string
     role: string
+    image: string
   }
   interface Session {
     user: {
       id: string
       username: string
       role: string
+      image: string
     }
   }
 }

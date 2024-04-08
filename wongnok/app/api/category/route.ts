@@ -5,6 +5,7 @@ const uploadPath = process.env.DEFAULT_UPLOAD_PATH;
 
 const prisma = getPrismaClient()
 
+//get all categorys
 export async function GET() {
     try {
         const categorys = await prisma.category.findMany()
@@ -19,6 +20,7 @@ export async function GET() {
     }
 }
 
+//create category
 export async function POST(req: Request) {
     const formData = await req.formData()
 
@@ -26,7 +28,7 @@ export async function POST(req: Request) {
     const title: any = formData.get('title')
     const href: any = formData.get('href')
 
-    if (!image || !title) {
+    if (!image || !title || !href) {
         return Response.json({
             message: "Invalid data"
         }, { status: 422 })

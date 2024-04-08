@@ -24,7 +24,6 @@ model Recipe {
   steps       String[]
   tags        String[]  @default([])
   viewers     Int       @default(0)
-  ratings     Rating[]
   comments    Comment[]
   author      User      @relation(fields: [authorId], references: [id])
   authorId    String    @db.ObjectId
@@ -46,27 +45,17 @@ model User {
   image       String    @default("")
   recipes     Recipe[]
   comments    Comment[]
-  ratings     Rating[]
 }
 
 model Comment {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   comment     String
+  rating      Int
   recipe      Recipe    @relation(fields: [recipeId], references: [id])
   recipeId    String    @db.ObjectId
   user        User     @relation(fields: [userId], references: [id])
   userId      String   @db.ObjectId
   createdAt   DateTime  @default(now())
-}
-
-model Rating {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  value      Int      
-  recipe     Recipe   @relation(fields: [recipeId], references: [id])
-  recipeId   String   @db.ObjectId
-  user       User     @relation(fields: [userId], references: [id])
-  userId     String   @db.ObjectId
-  createdAt  DateTime @default(now())
 }
 
 model Category {

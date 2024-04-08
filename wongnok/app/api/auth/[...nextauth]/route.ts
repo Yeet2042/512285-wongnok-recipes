@@ -27,6 +27,7 @@ export const authOptions: AuthOptions = {
                         username: user.username,
                         email: user.email,
                         role: user.role,
+                        image: user.image,
                     }
                 } else {
                     throw new Error('Invalid email or password')
@@ -44,6 +45,7 @@ export const authOptions: AuthOptions = {
                 token.username = user.username
                 token.id = user.id
                 token.role = user.role
+                token.image = user.image
             }
             return token
         },
@@ -52,6 +54,7 @@ export const authOptions: AuthOptions = {
                 session.user.username = token.username as string
                 session.user.id = token.id as string
                 session.user.role = token.role as string
+                session.user.image = token.image as string
             }
             return session
         }
