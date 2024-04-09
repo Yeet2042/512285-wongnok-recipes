@@ -11,6 +11,7 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
             },
             select: {
                 id: true,
+                userId: true,
                 comment: true,
                 rating: true,
                 createdAt: true,
