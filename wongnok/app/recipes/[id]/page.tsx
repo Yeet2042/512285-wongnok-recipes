@@ -18,9 +18,6 @@ export default function Page({}: Props) {
     const [commentList, setCommentList] = useState([])
     const [showSendCommand, setShowSendCommand] = useState(false)
 
-    const [comment, setComment] = useState()
-
-
     const fetchData = async () => {
         try {
             const [ recipeRes, commentListRes ] = await Promise.all([
@@ -91,7 +88,7 @@ export default function Page({}: Props) {
     }
     
     return (
-        recipe && commentList.length > 0 && (
+        recipe && (
             <>
                 <div className="w-full mx-auto flex flex-col max-w-5xl my-10">
                     <TitleSection recipeData={recipe} />
@@ -101,7 +98,9 @@ export default function Page({}: Props) {
                             <p>กรุณาเข้าสู่ระบบเพื่อแสดงความคิดเห็น</p>
                         )}
                     </div>
-                    <SendComment commentList={commentList} onSendComment={handleOnSendComment} onSendDelete={handleDelete} showButton={showSendCommand} />
+                    {session?.user.id !== recipe.authorId && (
+                        <SendComment commentList={commentList} onSendComment={handleOnSendComment} onSendDelete={handleDelete} showButton={showSendCommand} />
+                    )}
                     <CommentSection commentList={commentList} />
                 </div>
             </>

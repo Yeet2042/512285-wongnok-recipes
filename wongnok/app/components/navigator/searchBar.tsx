@@ -33,7 +33,9 @@ export default function SearchBar({}: Props) {
     }
 
     useEffect(() => {
-        fetchData(search)
+        if (search !== "") {
+            fetchData(search)
+        }
     },[search])
 
     return (
@@ -68,65 +70,69 @@ export default function SearchBar({}: Props) {
                                     onValueChange={setSearch}
                                 />
                             </ModalHeader>
-                            <ModalBody className="overflow-auto scroll">
+                            <ModalBody className="overflow-auto">
                                 {searchList.length > 0 &&
                                 searchList.map((search, index) => (
-                                    <Button 
-                                        key={index} 
-                                        variant="flat"
-                                        className="flex gap-4 w-full h-fit justify-between"
-                                        onPress={() => {
-                                            router.push(`/recipes/${search._id.$oid}`)
-                                            onClose()
-                                        }}
-                                    >
-                                        <div className="flex">
-                                            <Image
-                                                height={100}
-                                                width={100}
-                                                src={search.titleImage}
-                                                alt="รูปภาพหน้าปก" 
-                                                className="my-4 rounded-xl"
-                                            />
-                                            <div className="flex flex-col items-start self-start m-4 gap-4">
-                                                <div className="flex gap-2 items-center">
-                                                    <div className="flex items-center">
-                                                        <p className="text-2xl font-bold text-left">{calculateAverageRating(search.comments)}</p>
-                                                        <StarIcon className="h-8 w-8 text-yellow-500" />
-                                                    </div>
-                                                    <h1 className="text-xl font-bold">{search.name}</h1>
-                                                </div>
-                                                <User
-                                                    avatarProps={{
-                                                        isBordered: true,
-                                                        radius: "md",
-                                                        src: `${search.author[0].image}`,
-                                                    }}
-                                                    className="transition-transform"
-                                                    description={search.author[0].role}
-                                                    name={search.author[0].username}
+                                    <div key={index} >
+                                        <Button 
+                                            variant="flat"
+                                            className="flex gap-4 w-full h-fit justify-between"
+                                            onPress={() => {
+                                                router.push(`/recipes/${search._id.$oid}`)
+                                                onClose()
+                                            }}
+                                        >
+                                            <div className="flex">
+                                                <Image
+                                                    height={100}
+                                                    width={100}
+                                                    src={search.titleImage}
+                                                    alt="รูปภาพหน้าปก" 
+                                                    className="my-4 rounded-xl"
                                                 />
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col self-end m-3 gap-3">
-                                            <div className="flex items-center justify-center">
-                                                <CalendarIcon className="h-6 w-6"/>
-                                                <p className="ml-1 text-sm">{search.createdAt.$date.slice(0, 10)}</p>
-                                            </div>
-                                            <div className="flex justify-end gap-4">
-                                                <div className="flex items-center justify-center">
-                                                    <EyeIcon className="h-6 w-6"/>
-                                                    <p className="ml-1 text-sm">{search.viewers}</p>
+                                                <div className="flex flex-col items-start self-start m-4 gap-4">
+                                                    <div className="flex gap-2 items-center">
+                                                        <div className="flex items-center">
+                                                            <p className="text-2xl font-bold text-left">{calculateAverageRating(search.comments)}</p>
+                                                            <StarIcon className="h-8 w-8 text-yellow-500" />
+                                                        </div>
+                                                        <h1 className="text-xl font-bold">{search.name}</h1>
+                                                    </div>
+                                                    <User
+                                                        avatarProps={{
+                                                            isBordered: true,
+                                                            radius: "md",
+                                                            src: `${search.author[0].image}`,
+                                                        }}
+                                                        className="transition-transform"
+                                                        description={search.author[0].role}
+                                                        name={search.author[0].username}
+                                                    />
                                                 </div>
+                                            </div>
+                                            <div className="flex flex-col self-end m-3 gap-3">
                                                 <div className="flex items-center justify-center">
-                                                    <ChatBubbleLeftRightIcon className="h-6 w-6"/>
-                                                    <p className="ml-1 text-sm">{search.comments?.length ? search.comments.length : "0"}</p>
+                                                    <CalendarIcon className="h-6 w-6"/>
+                                                    <p className="ml-1 text-sm">{search.createdAt.$date.slice(0, 10)}</p>
+                                                </div>
+                                                <div className="flex justify-end gap-4">
+                                                    <div className="flex items-center justify-center">
+                                                        <EyeIcon className="h-6 w-6"/>
+                                                        <p className="ml-1 text-sm">{search.viewers}</p>
+                                                    </div>
+                                                    <div className="flex items-center justify-center">
+                                                        <ChatBubbleLeftRightIcon className="h-6 w-6"/>
+                                                        <p className="ml-1 text-sm">{search.comments?.length ? search.comments.length : "0"}</p>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </Button>
+                                        </Button>
+                                    </div>
                                 ))}
                             </ModalBody>
+                            <ModalFooter>
+
+                            </ModalFooter>
                         </>
                     )}
                 </ModalContent>

@@ -1,6 +1,8 @@
-import { EyeIcon } from '@heroicons/react/24/solid'
+import { EyeIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/solid'
 import { Button, User } from '@nextui-org/react'
 import Image from 'next/image'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 type Author = {
@@ -41,6 +43,34 @@ type Props = {
 }
 
 export default function TitleSection({ recipeData }: Props) {
+    const router = useRouter()
+
+    const { data: session, status } = useSession()
+
+    const handleEdit = () => {
+        router.push(`/edit/${recipeData.id}`)
+    }
+
+    const handleDelete = async (recipeId: string) => {
+        console.log("Hello")
+        
+        const res = await fetch(`/api/recipes`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: recipeId,
+                authorId: session?.user.id
+            }),
+        })
+        if (res.ok) {
+            router.push("/")
+        } else {
+            console.error("Delete failed")
+        }
+    }
+
     return (
         recipeData && (
             <>
@@ -67,17 +97,41 @@ export default function TitleSection({ recipeData }: Props) {
                                 สร้างเมื่อ {new Date(recipeData.createdAt).toLocaleString()}
                             </p>
                         </div>
-                        <User
-                            as="button"
-                            avatarProps={{
-                                isBordered: true,
-                                radius: "md",
-                                src: `${recipeData.author.image}`,
-                            }}
-                            className="transition-transform"
-                            description={recipeData.author.role}
-                            name={recipeData.author.username}
-                        />
+                        <div className='flex gap-4 items-center'>
+                            {session?.user.id === recipeData.authorId && (
+                                <>
+                                    <Button 
+                                        className="w-fit self-end"
+                                        startContent={ <PencilIcon className="h-4 w-4" /> }
+                                        variant="flat"
+                                        color="success"
+                                        onPress={handleEdit}
+                                    >
+                                        แก้ไขข้อมูล
+                                    </Button>
+                                    <Button
+                                        color="danger"
+                                        variant="flat"
+                                        startContent={<TrashIcon className="h-5 w-5" />}
+                                        className="w-fit"
+                                        onPress={() => handleDelete(recipeData.id)}
+                                    >
+                                        ลบ
+                                    </Button>
+                                </>
+                            )}
+                            <User
+                                as="button"
+                                avatarProps={{
+                                    isBordered: true,
+                                    radius: "md",
+                                    src: `${recipeData.author.image}`,
+                                }}
+                                className="transition-transform"
+                                description={recipeData.author.role}
+                                name={recipeData.author.username}
+                            />
+                        </div>
                     </div>
                     <h1 className="text-3xl font-bold py-5">{recipeData.name}</h1>
                     <div>

@@ -26,7 +26,7 @@ type Props = {
 export default function CommentSection({ commentList }: Props) {
     const { data: session, status } = useSession()
     return (
-        commentList && (
+        commentList && commentList.length > 0 && (
             <>
                 {!session?.user && commentList.map((comment, index) => (
                     <div key={index} className="w-4/5 mt-10 self-center flex flex-col gap-4">

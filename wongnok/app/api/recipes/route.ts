@@ -124,6 +124,125 @@ export async function POST(req: Request) {
     }
 }
 
+//update recipe
+export async function PUT(req: Request) {
+    try {
+        const formData = await req.formData()
+        console.log(formData)
+        
+
+        const recipeId = formData.get('recipeId')
+        const authorId = formData.get('authorId')
+        const newRecipeName = formData.get('newRecipeName')
+        const newDiff = formData.get('newDiff')
+        const newTime = formData.get('newTime')
+        const newIngredients = formData.get('newIngredients')
+        const newTitleSteps = formData.get('newTitleSteps')
+        const newTitleImage = formData.get('newTitleImage')
+
+        //authenticated
+        const recipe = await prisma.recipe.findUnique({
+            where: {
+                id: recipeId
+            }
+        })
+        if (recipe?.authorId !== authorId) {
+            return Response.json({
+                message: "Unauthorized"
+            }, { status: 401 })
+        }
+
+        if (newRecipeName !== "null") {
+            const updateRecipeName = await prisma.recipe.update({
+                where: {
+                    id: recipeId
+                },
+                data: {
+                    name: newRecipeName
+                }
+            })
+        }
+
+        if (newDiff !== "null") {
+            const updateDiff = await prisma.recipe.update({
+                where: {
+                    id: recipeId
+                },
+                data: {
+                    diffculty: newDiff
+                }
+            })
+        }
+        if (newTime !== "null") {
+            const updateTime = await prisma.recipe.update({
+                where: {
+                    id: recipeId
+                },
+                data: {
+                    time: newTime
+                }
+            })
+        }
+        if (newIngredients !== "null") {
+            const updateIngredients = await prisma.recipe.update({
+                where: {
+                    id: recipeId
+                },
+                data: {
+                    ingredients: newIngredients
+                }
+            })
+        }
+        if (newTitleSteps.lenght > 0) {
+            const updateTitleSteps = await prisma.recipe.update({
+                where: {
+                    id: recipeId
+                },
+                data: {
+                    steps: newTitleSteps
+                }
+            })
+        }
+        if (newTitleImage !== "null") {
+            //upload image
+            let newTitleImageURL: string
+            const formattedName = recipe.name.replace(/\s+/g, '-')
+            try {
+                const newTitleImageName = `${Date.now()}-${formattedName}-${newTitleImage.name}`
+                const titlePath = uploadPath + '/recipes/title/' + newTitleImageName
+                const titleData = await newTitleImage.arrayBuffer()
+                await fsPromises.writeFile(titlePath, Buffer.from(titleData))
+                newTitleImageURL = '/recipes/title/' + newTitleImageName
+            } catch (error) {
+                console.log(error)
+                return Response.json({
+                    message: "Internal server error"
+                }, { status: 500 })
+            }
+
+            const updateTitleImage = await prisma.recipe.update({
+                where: {
+                    id: recipeId
+                },
+                data: {
+                    titleImage: newTitleImageURL
+                }
+            })
+        }
+
+        return Response.json({
+            message: "Updated"
+        }, { status: 200 })
+
+    } catch (error) {
+        console.log(error)
+        
+        return Response.json({
+            message: "Internal server error"
+        }, { status: 500 })
+    }
+}
+
 //delete recipe
 export async function DELETE(req: Request) {
     try {
@@ -132,6 +251,14 @@ export async function DELETE(req: Request) {
             authorId
         } = await req.json()
 
+        // ลบ comment ก่อนลบ recipe
+        await prisma.comment.deleteMany({
+            where: {
+                recipeId: id
+            }
+        })
+
+        // ลบ recipe
         await prisma.recipe.delete({
             where: {
                 id,
@@ -144,6 +271,8 @@ export async function DELETE(req: Request) {
         }, { status: 201 })
 
     } catch (error) {
+        console.log(error)
+        
         return Response.json({
             message: "Internal server error"
         }, { status: 500 })

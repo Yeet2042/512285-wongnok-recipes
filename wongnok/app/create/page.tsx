@@ -107,7 +107,7 @@ export default function Create({}: Props) {
     formData.append('time', time);
     formData.append('ingredients', JSON.stringify(ingredients));
     if (session?.user.id !== undefined) {
-      formData.append('userId', session.user.id);
+      formData.append('userId', session.user.id)
     }
 
     const titleSteps = steps.map(step => step.title)
