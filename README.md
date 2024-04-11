@@ -60,7 +60,7 @@
 - คัดกรองการแสดงสูตรด้วย tag ความยาก และเวลาที่ใช้ในการทำ
 # Tools
 
-Fontend & Backend: NextJS
+Frontend & Backend: NextJS
 
 UI: NextUI & TailwindCSS
 
