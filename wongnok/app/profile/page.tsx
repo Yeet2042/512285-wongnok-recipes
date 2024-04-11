@@ -42,8 +42,6 @@ export default function Profile() {
             fetchData()
         }
     }, [session?.user.id])
-
-    console.log(recipes)
     
     return (
         status === 'authenticated' &&
