@@ -1,0 +1,403 @@
+{
+	"info": {
+		"_postman_id": "3ebe1fe1-adc1-4398-a957-2b9cdf74681b",
+		"name": "API route for Wongnok recipes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13320847",
+		"_collection_link": "https://lively-robot-48718.postman.co/workspace/512285-Wongnok-Recipes~8f17a525-5eb0-4a92-a612-0c477c14bd4e/collection/13320847-3ebe1fe1-adc1-4398-a957-2b9cdf74681b?action=share&source=collection_link&creator=13320847"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "All user recipes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/user/66111aabea8d6b9a2e5c58b8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"66111aabea8d6b9a2e5c58b8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\":\"Hello2077\",\n    \"email\":\"hello@hello.com\",\n    \"password\":\"asdf1234\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "สร้าง user ใหม่ และค้นหาสูตรของ user ทั้งหมด"
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "All catergorys",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "image",
+									"description": "รูปภาพ (ไฟล์)",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "title",
+									"value": "",
+									"description": "ชื่อ",
+									"type": "text"
+								},
+								{
+									"key": "href",
+									"value": "",
+									"description": "สำหรับนำไป route",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"category"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "สำหรับดึงและสร้างข้อมูล Category จาก database"
+		},
+		{
+			"name": "Recommend",
+			"item": [
+				{
+					"name": "All recommends",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/recommend",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"recommend"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "สำหรับดึงข้อมูล Recommend จาก database"
+		},
+		{
+			"name": "Recipes",
+			"item": [
+				{
+					"name": "All Recipes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/recipes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"recipes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Recipe by recipeId",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/recipes/66125e98cc39f98d6b44cdd8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"recipes",
+								"66125e98cc39f98d6b44cdd8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Recipe",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "",
+									"description": "ชื่อสูตรอาหาร ex. ท่อมต้ม",
+									"type": "text"
+								},
+								{
+									"key": "difficulty",
+									"value": "",
+									"description": "ความยาก ex. easy, mediuim, hard",
+									"type": "text"
+								},
+								{
+									"key": "time",
+									"value": "",
+									"description": "เวลาที่ใช้ในการทำ ex. 5-10min, 11-30min, 31-60min, 60+min",
+									"type": "text"
+								},
+								{
+									"key": "ingredients",
+									"value": "",
+									"description": "วัตถุดิบ ex. [ { \"name\":\"ใบท่อม\", \"quantity\":\"1 ใบ\" } ]",
+									"type": "text"
+								},
+								{
+									"key": "titleSteps",
+									"description": "รูปขั้นตอนการทำ ex. dog.jpg",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "titleImage",
+									"description": "รูปสูตรอาหาร ex. cat.jpg",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "userId",
+									"value": "",
+									"description": "id ที่ได้จาการ sign up ex. 66111aabea8d6b9a2e5c58b8",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/recipes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"recipes"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "สำหรับสร้าง, ดึง, แก้ไข, และลบข้อมูล Recipe จาก database"
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "Comment by recipeId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/comments/66125e98cc39f98d6b44cdd8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"comments",
+								"66125e98cc39f98d6b44cdd8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"comment\":\"Very testy\",\n    \"rating\": 5, //1-5\n    \"userId\":\"66111aabea8d6b9a2e5c58b8\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/comments/66125e98cc39f98d6b44cdd8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"comments",
+								"66125e98cc39f98d6b44cdd8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete by commentId",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\":\"66111aabea8d6b9a2e5c58b8\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/comments/66143ee9c9fd1a96a6449df4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"comments",
+								"66143ee9c9fd1a96a6449df4"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "สำหรับสร้าง และลบข้อมูล Comment จาก database"
+		},
+		{
+			"name": "Search",
+			"item": [
+				{
+					"name": "Search by name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/search/แมว",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"search",
+								"แมว"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "ค้นหาข้อมูลสูตรอาหาร"
+		}
+	]
+}
