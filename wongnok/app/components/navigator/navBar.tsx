@@ -25,10 +25,13 @@ export default function NavBar({}: Props) {
     }, [])
 
     if(!mounted) return null
-  return (
-    <Navbar className="p-2">
-        <NavbarBrand className="gap-4">
-            <Link href="/" className="font-bold text-inherit">Wongnok recipes</Link>
+    return (
+        <Navbar className="p-2">
+            <NavbarBrand className="flex gap-4 justify-center">
+                <Link href="/" className="flex sm:flex-row flex-col gap-2 font-bold text-inherit">
+                    <p>Wongnok</p>
+                    <p>Recipes</p>
+                </Link>
                 <Switch
                     isSelected={theme === "dark" ? false : true}
                     size="sm"
@@ -39,16 +42,17 @@ export default function NavBar({}: Props) {
                         setTheme(theme === "dark" ? "light" : "dark")
                     }}
                 />
-        </NavbarBrand>
-        <NavbarContent className="hidden sm:flex gap-4" justify="center">
-            
-        </NavbarContent>
-        <NavbarContent justify="end">
+            </NavbarBrand>
+            <NavbarContent className="hidden sm:flex gap-4" justify="center">
                 <SearchBar />
-                <NavbarItem className="space-x-2">
+            </NavbarContent>
+            <NavbarContent justify="end">
+                <NavbarItem className="flex gap-2">
                     {status !== "authenticated" && (
                         <>
-                            <SignInButton />
+                            <div className="hidden sm:flex">
+                                <SignInButton />
+                            </div>
                             <SignUpButton />
                         </>
                     )}
@@ -58,9 +62,8 @@ export default function NavBar({}: Props) {
                             <ProfileNav />
                         </div>
                     )}
-                    
                 </NavbarItem>
-        </NavbarContent>
-    </Navbar>
-  )
+            </NavbarContent>
+        </Navbar>
+    )
 }

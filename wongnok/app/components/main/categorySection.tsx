@@ -15,8 +15,8 @@ export default function CategorySection({ categoryItems }: Props) {
     return (
         <>
             <div className="container">
-            <h1 className="text-2xl font-bold">หมวดหมู่อาหารยอดนิยม</h1>
-                <div className="gap-20 grid grid-cols-2 sm:grid-cols-4 pt-10">
+            <h1 className="text-2xl font-bold text-center sm:text-left">หมวดหมู่อาหารยอดนิยม</h1>
+                <div className="gap-10 sm:gap-20 grid grid-cols-2 sm:grid-cols-4 pt-10 mx-4 sm:mx-auto">
                     {categoryItems.map((category, index) => (
                     <Card shadow="sm" key={index} isPressable className="w-full">
                         <CardBody className="overflow-visible p-0">

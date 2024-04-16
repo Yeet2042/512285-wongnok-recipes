@@ -38,8 +38,8 @@ export default function RecommendSection({ recommendItem }: Props) {
     return (
         <>
             <div className="container">
-            <h1 className="text-2xl font-bold">แนะนำสำหรับคุณ</h1>
-                <div className="gap-3 grid grid-cols-2 sm:grid-cols-4 pt-10">
+            <h1 className="text-2xl font-bold text-center sm:text-left">แนะนำสำหรับคุณ</h1>
+                <div className="gap-3 grid grid-cols-2 sm:grid-cols-4 pt-10 mx-4 sm:mx-auto">
                     {Object.entries(recommendItem).map(([key, recipe], index) => (
                         <div key={index} className="flex flex-col gap-4">
                             <h2 className="self-center text-lg sm:text-xl font-bold">{key}</h2>

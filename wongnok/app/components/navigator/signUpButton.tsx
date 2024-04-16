@@ -53,7 +53,7 @@ export default function SignUpButton({}: Props) {
     return (
         <>
             <Button 
-                onPress={onOpen}
+                onClick={onOpen}
                 color="primary"
                 className="text-lg font-bold"
             >สมัครสมาชิก</Button>
@@ -134,7 +134,7 @@ export default function SignUpButton({}: Props) {
                                 <Button 
                                     color="primary" 
                                     className="w-full text-lg font-bold"
-                                    onPress={handleSubmit}
+                                    onClick={handleSubmit}
                                 >
                                     สมัครสมาชิก
                                 </Button>
@@ -142,7 +142,7 @@ export default function SignUpButton({}: Props) {
                                     <p>มีบัญชีผู้ใช้แล้ว?</p>
                                     <Link 
                                         color="primary" 
-                                        onPress={() => {
+                                        onClick={() => {
                                             onClose()
                                         }}
                                     >

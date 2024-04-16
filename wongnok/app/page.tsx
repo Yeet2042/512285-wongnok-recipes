@@ -68,7 +68,7 @@ export default function Page({}: Props) {
   return (
     <>
       <BannerSection />
-      <div className="w-full mx-auto flex flex-col max-w-5xl py-20 space-y-10">
+      <div className="w-full mx-auto flex flex-col sm:max-w-5xl py-20 space-y-10">
         <CategorySection categoryItems={category} />
         <RecommendSection recommendItem={recommend} />
         <LatestSection latestItem={recipes} />
