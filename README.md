@@ -107,7 +107,7 @@ Dark & Light mode
 
 
 แก้ไขสูตร
-![แก้ไขสูตร](https://github.com/Yeet2042/512285-wongnok-recipes/blob/main/demo/delete.gif?raw=true)
+![แก้ไขสูตร](https://github.com/Yeet2042/512285-wongnok-recipes/blob/main/demo/update.gif)
 
 
 ลบสูตร
