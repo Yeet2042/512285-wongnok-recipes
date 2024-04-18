@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Switch, Input, button} from "@nextui-org/react";
+import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button, Switch, Input, button, NavbarMenuToggle, NavbarMenu, NavbarMenuItem} from "@nextui-org/react";
 import { MoonIcon, SunIcon, MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import {useTheme} from "next-themes";
 import { useEffect, useState } from "react";
@@ -17,6 +17,7 @@ type Props = {}
 export default function NavBar({}: Props) {
     const { data: session, status } = useSession()
     
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
     const [mounted, setMounted] = useState(false)
     const { theme, setTheme } = useTheme()
 
@@ -27,7 +28,11 @@ export default function NavBar({}: Props) {
     if(!mounted) return null
     return (
         <Navbar className="p-2">
-            <NavbarBrand className="flex gap-4 justify-center">
+            <NavbarMenuToggle
+                aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+                className="sm:hidden"
+            />
+            <NavbarBrand className="flex gap-4">
                 <Link href="/" className="flex sm:flex-row flex-col gap-2 font-bold text-inherit">
                     <p>Wongnok</p>
                     <p>Recipes</p>
@@ -43,27 +48,45 @@ export default function NavBar({}: Props) {
                     }}
                 />
             </NavbarBrand>
-            <NavbarContent className="hidden sm:flex gap-4" justify="center">
-                <SearchBar />
-            </NavbarContent>
             <NavbarContent justify="end">
-                <NavbarItem className="flex gap-2">
+                <NavbarItem className="hidden sm:flex">
+                    <SearchBar />
+                </NavbarItem>
+                <NavbarItem className="gap-2">
                     {status !== "authenticated" && (
-                        <>
-                            <div className="hidden sm:flex">
-                                <SignInButton />
-                            </div>
+                        <div className="hidden sm:flex">
+                            <SignInButton />
                             <SignUpButton />
-                        </>
+                        </div>
                     )}
                     {status === "authenticated" && (
                         <div className="flex space-x-6">
-                            <CreateRecipeButton />
+                            <div className="hidden sm:flex">
+                                <CreateRecipeButton />
+                            </div>
                             <ProfileNav />
                         </div>
                     )}
                 </NavbarItem>
             </NavbarContent>
+            <NavbarMenu className="flex flex-col items-center justify-center">
+                {status !== "authenticated" && (
+                    <>
+                        <NavbarMenuItem>
+                            <SignInButton />
+                        </NavbarMenuItem>
+                        <NavbarMenuItem>
+                            <SignUpButton />
+                        </NavbarMenuItem>
+                    </>
+                )}
+                {status === "authenticated" && (
+                    <>
+                        <SearchBar />
+                        <CreateRecipeButton />
+                    </>
+                )}
+            </NavbarMenu>
         </Navbar>
     )
 }

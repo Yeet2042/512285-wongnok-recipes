@@ -43,8 +43,8 @@ export default function LatestSection({ latestItem }: Props) {
     return (
         <>
             <div className="container">
-                <h1 className="text-2xl font-bold">สูตรอาหารล่าสุด</h1>
-                <div className="gap-3 grid grid-cols-2 sm:grid-cols-3 pt-10">
+                <h1 className="text-2xl font-bold text-center sm:text-left">สูตรอาหารล่าสุด</h1>
+                <div className="gap-3 grid grid-cols-2 sm:grid-cols-3 pt-10 mx-4 sm:mx-auto">
                     {latestItem.map((recipe, index) => (
                         <div key={index} className="flex flex-col gap-4">
                             <div>
@@ -74,7 +74,7 @@ export default function LatestSection({ latestItem }: Props) {
                                                     <p className="text-2xl font-bold text-left">{calculateAverageRating(recipe.comments)}</p>
                                                     <StarIcon className="h-8 w-8 text-yellow-500" />
                                                 </div>
-                                                <h1 className="text-2xl font-bold text-left">{recipe.name}</h1>
+                                                <p className="text-xl sm:text-2xl font-bold text-left">{recipe.name}</p>
                                                 <div className="flex my-5">
                                                     <User
                                                         avatarProps={{

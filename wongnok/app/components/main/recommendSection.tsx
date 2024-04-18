@@ -70,7 +70,7 @@ export default function RecommendSection({ recommendItem }: Props) {
                                                     <p className="text-2xl font-bold text-left">{calculateAverageRating(recipe.comments)}</p>
                                                     <StarIcon className="h-8 w-8 text-yellow-500" />
                                                 </div>
-                                                <h1 className="text-2xl font-bold text-left">{recipe.name}</h1>
+                                                <h1 className="text-xl sm:text-2xl font-bold text-left">{recipe.name}</h1>
                                                 <div className="flex my-5">
                                                     <User
                                                         avatarProps={{

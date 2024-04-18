@@ -30,7 +30,7 @@
 
 - ยอดคนดูสูตรอาหาร
 
-- Responsive //นิดหน่อย
+- Responsive
 
 - Dark mode
 
@@ -43,21 +43,6 @@
 - แสดงความคิดเห็น ( ต้องสมัครสมาชิกก่อน )
 
 - API route ต่างๆ ( สามารถดูได้ใน Postman จากไฟล์ Collection นี้ [API route for Wongnok recipes](https://github.com/Yeet2042/512285-wongnok-recipes/blob/main/API%20route%20for%20Wongnok%20recipes.postman_collection.json) )
-
-
-## Roadmap
-
-- ค้นหาสูตรอาหารด้วย วัตถุดิบ
-
-- Responsive สำหรับทุก Page
-
-- ดู Profile ของสมาชิกท่านอื่น
-
-- Admin page
-
-- API keys ( สำหรับ API บาง Route ที่ Sensitive )
-
-- คัดกรองการแสดงสูตรด้วย tag ความยาก และเวลาที่ใช้ในการทำ
 # Tools
 
 Frontend & Backend: NextJS

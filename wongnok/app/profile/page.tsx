@@ -48,15 +48,15 @@ export default function Profile() {
         session.user && 
         recipes && (
             <>
-                <div className="w-full mx-auto flex flex-col max-w-5xl my-20">
-                    <div className="container flex justify-center p-10">
+                <div className="w-full mx-auto flex flex-col sm:max-w-5xl my-10 sm:my-20 gap-10">
+                    <div className="container flex justify-center sm:pt-10 gap-10">
                         <Avatar
                             isBordered
                             src={session.user.image}
                             radius="full"
                             className="h-32 w-32"
                         />
-                        <div className="ml-14">
+                        <div className="">
                             <h1 className="text-2xl font-bold ">{session.user.username}</h1>
                             <p>{session.user.role}</p>
                             <div className="m-5">
@@ -64,8 +64,8 @@ export default function Profile() {
                             </div>
                         </div>
                     </div>
-                    <h1 className="text-2xl font-bold">สูตรอาหารของฉัน</h1>
-                    <div className="gap-3 grid grid-cols-2 sm:grid-cols-3 pt-10">
+                    <h1 className="text-2xl font-bold text-center sm:text-left">สูตรอาหารของฉัน</h1>
+                    <div className="gap-3 grid grid-cols-2 sm:grid-cols-3">
                         {recipes.map((recipe, index) => (
                             <div key={index} className="flex flex-col gap-4">
                                 <div>
